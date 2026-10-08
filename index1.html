@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Noamundi QuickMart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--g:#14532d;--g2:#16a34a;--o:#f97316;--bg:#f6f8f5;--c:#fff;--t:#14211a;--m:#64748b;--b:#e2e8f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1511;--c:#17211b;--t:#eef4ef;--m:#9bb0a2;--b:#27352c}}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--t);font:15px system-ui,sans-serif;padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+header{background:var(--g);color:#fff;padding:12px 14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.logo{font-weight:800;font-size:18px}.logo b{color:var(--o)}
+.loc{font-size:12px;opacity:.85;cursor:pointer}
+.srch{width:100%;margin-top:8px;padding:11px 14px;border-radius:12px;border:0;background:#fff;color:#111}
+main{padding:14px;max-width:760px;margin:auto}
+h2{margin:18px 0 8px;font-size:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.big{border-radius:20px;padding:18px 12px;color:#fff;cursor:pointer;min-height:130px;animation:fl 3s ease-in-out infinite;border:0;text-align:left}
+.big span{font-size:38px;display:block}.big small{opacity:.9}
+@keyframes fl{50%{transform:translateY(-4px)}}
+.card{background:var(--c);border:1px solid var(--b);border-radius:16px;padding:12px;margin:10px 0}
+.row{display:flex;gap:12px;align-items:center}.grow{flex:1;min-width:0}
+.img{width:62px;height:62px;border-radius:14px;background:#e8f5e9;display:grid;place-items:center;font-size:32px;overflow:hidden;flex:none}.img img{width:100%;height:100%;object-fit:cover}
+.m{color:var(--m);font-size:12.5px}.tag{display:inline-block;background:#fff3e6;color:#c2410c;border-radius:8px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
+.btn{background:var(--g2);color:#fff;border:0;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600}.btn.o{background:var(--o)}.btn.s{background:var(--c);color:var(--t);border:1px solid var(--b)}.btn.r{background:#dc2626}.btn.sm{padding:5px 9px;font-size:13px}
+.qty{display:inline-flex;align-items:center;gap:8px;background:var(--g2);color:#fff;border-radius:10px;padding:3px 6px}.qty button{background:none;border:0;color:#fff;font-size:18px;width:26px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0}.chip{white-space:nowrap;border:1px solid var(--b);background:var(--c);border-radius:20px;padding:6px 12px;cursor:pointer}.chip.on{background:var(--g);color:#fff}
+nav{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px));left:8px;right:8px;background:var(--c);border:1px solid var(--b);border-radius:18px;box-shadow:0 4px 18px #0002;display:flex;z-index:6}
+nav a{flex:1;text-align:center;padding:8px 0;font-size:11px;color:var(--m);text-decoration:none}nav a.on{color:var(--g2);font-weight:700}nav a span{display:block;font-size:20px}
+.vg{display:inline-block;width:12px;height:12px;border:1.5px solid #16a34a;border-radius:3px;position:relative;vertical-align:middle}.vg:after{content:"";position:absolute;inset:2px;border-radius:50%;background:#16a34a}.vg.nv{border-color:#b91c1c}.vg.nv:after{background:#b91c1c}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--b);border-radius:10px;background:var(--c);margin:3px 0 8px}
+label{font-size:12.5px;color:var(--m)}
+.bar{position:fixed;left:12px;right:12px;bottom:calc(138px + env(safe-area-inset-bottom,0px));background:var(--g);color:#fff;border-radius:14px;padding:11px 14px;display:flex;justify-content:space-between;z-index:5;cursor:pointer}
+.mod{position:fixed;inset:0;background:#0007;z-index:20;display:grid;place-items:end center}.mod>div{background:var(--bg);width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:20px 20px 0 0;padding:16px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px}.tot{display:flex;justify-content:space-between;padding:3px 0}.tot.f{font-weight:800;border-top:1px dashed var(--b);margin-top:6px;padding-top:8px}
+.warn{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px;font-size:13px}
+.st{font-size:11px;border-radius:6px;padding:2px 6px;background:#e2e8f0;color:#111}.st.Open{background:#dcfce7}.st.Closed{background:#fee2e2}
+</style></head><body>
+<header><div class="row"><div class="grow"><div class="logo">🛵 NOAMUNDI <b>QUICKMART</b></div><div class="loc" onclick="chLoc()">📍 <span id="loc"></span> ▾</div></div><button class="btn sm o" onclick="wa()">WhatsApp</button></div>
+<input class="srch" id="q" placeholder="Search for restaurants, dishes or groceries" oninput="go('#/s/'+encodeURIComponent(this.value))"></header>
+<main id="v"></main><div id="bar"></div>
+<nav id="nav"></nav><div id="md"></div><div id="md2"></div><div id="tt"></div>
+<script>
+const e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id), uid=()=>Math.random().toString(36).slice(2,9);
+const im=v=>`<div class="img">${(v||'').startsWith('data:')?`<img src="${v}">`:e(v||'🍽️')}</div>`;
+const money=n=>'₹'+Math.round(n*100)/100;
+// ---------- DATA LAYER (swap with Supabase/Firebase: replace load/save + auth adapter) ----------
+const KEY='qm_data_v1';
+const seed=()=>({
+ biz:{name:'Noamundi QuickMart',wa:'917061110842',phone:'+917061110842',addr:'Noamundi, Jharkhand',areas:'Noamundi Bazaar, Block A-G, Station Road',open:'08:00',close:'21:00',minOrder:0,upi:'7858030699@ptyes',support:'Need help? Call or WhatsApp us.',loc:'Noamundi, Jharkhand',demo:true},
+ del:{mode:'flat',flatFee:20,freeAbove:199,slabs:[[2,15],[4,25],[6,35],[99,45]],foodFee:'',groceryFee:'',nightFrom:21,nightFee:10},
+ rest:[{id:'r1',name:'Spice Junction',img:'🍛',cuisine:'North Indian, Biryani',rating:4.4,prep:25,dtime:35,min:99,open:true,on:true,veg:false,desc:'Home-style curries and biryani.',addr:'Main Road',phone:'',hours:'10 AM - 10 PM',offer:'20% OFF up to ₹50',fee:'',cats:['Recommended','Biryani','Beverages']},
+ {id:'r2',name:'Green Bowl Veg',img:'🥗',cuisine:'Pure Veg, Chinese',rating:4.1,prep:20,dtime:30,min:0,open:true,on:true,veg:true,desc:'Fresh pure veg meals.',addr:'Station Road',phone:'',hours:'9 AM - 9 PM',offer:'',fee:'',cats:['Recommended','Chinese','Snacks']}],
+ items:[{id:'i1',rid:'r1',cat:'Biryani',name:'Chicken Biryani',desc:'Basmati, tender chicken',price:180,veg:false,avail:true,img:'🍗'},
+ {id:'i2',rid:'r1',cat:'Recommended',name:'Paneer Butter Masala',desc:'Creamy tomato gravy',price:160,veg:true,avail:true,img:'🧈'},
+ {id:'i3',rid:'r1',cat:'Beverages',name:'Cold Drink 250ml',desc:'',price:25,veg:true,avail:true,img:'🥤'},
+ {id:'i4',rid:'r2',cat:'Chinese',name:'Veg Hakka Noodles',desc:'Wok tossed',price:90,veg:true,avail:true,img:'🍜'},
+ {id:'i5',rid:'r2',cat:'Snacks',name:'Veg Momos (8 pcs)',desc:'Steamed',price:70,veg:true,avail:true,img:'🥟'}],
+ gcats:[['Milk & Dairy','🥛'],['Eggs','🥚'],['Bread & Bakery','🍞'],['Biscuits','🍪'],['Cold Drinks','🥤'],['Snacks','🍟'],['Noodles & Instant Food','🍜'],['Atta, Rice & Staples','🌾'],['Toiletries','🧴'],['Cleaning Products','🧹'],['Household Essentials','🏠']].map(x=>({id:uid(),name:x[0],img:x[1]})),
+ prods:[['Amul Milk 500ml','Amul',30,'',0,'Milk & Dairy','🥛'],['Eggs (6 pcs)','Local',48,45,0,'Eggs','🥚'],['Britannia Bread','Britannia',45,'',0,'Bread & Bakery','🍞'],['Parle-G','Parle',10,'',0,'Biscuits','🍪'],['Maggi 2-min Noodles','Maggi',14,'',0,'Noodles & Instant Food','🍜'],['Dove Soap','Dove',65,'',0,'Toiletries','🧼'],['Cinthol Soap','Cinthol',38,'',0,'Toiletries','🧼'],['Aashirvaad Atta 5kg','Aashirvaad',280,265,0,'Atta, Rice & Staples','🌾'],['Surf Excel 1kg','Surf Excel',130,'',1,'Cleaning Products','🧹']].map((p,i)=>({id:'p'+i,name:p[0],brand:p[1],price:p[2],disc:p[3],size:'',out:!!p[4],cat:p[5],img:p[6]})),
+ offers:[{id:'o1',title:'20% OFF up to ₹50',type:'pct',value:20,max:50,min:149,scope:'all',on:true},{id:'o2',title:'Free delivery on grocery ₹299+',type:'free',value:0,max:0,min:299,scope:'grocery',on:true}],
+ orders:[],auth:null});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(x){}if(!S)S=seed();
+if(S.biz.upi==='quickmart@upi')S.biz.upi='7858030699@ptyes';
+if(S.biz.wa==='919000000000'){S.biz.wa='917061110842';S.biz.phone='+917061110842'}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){alert('Storage full: use smaller images')}};
+// Auth adapter (DEMO ONLY: client-side check is NOT secure; replace with Supabase/Firebase Auth)
+const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const Auth={ok:()=>sessionStorage.qmAdmin==='1',
+ async login(u,p){if(!S.auth){S.auth={u,h:await sha(p)};save();sessionStorage.qmAdmin='1';return true}
+  if(u===S.auth.u&&await sha(p)===S.auth.h){sessionStorage.qmAdmin='1';return true}return false},out(){delete sessionStorage.qmAdmin}};
+function toast(m){const t=$('tt');t.innerHTML=`<div style="position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:50;background:#111;color:#fff;border-radius:12px;padding:12px;text-align:center">${e(m)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>t.innerHTML='',3500)}
+window.alert=toast;
+function ask(m,ok,inp,def){window._ok=ok;$('md2').innerHTML=`<div class="mod" style="z-index:30"><div style="max-width:420px;border-radius:20px;margin:auto"><p style="white-space:pre-line">${e(m)}</p>${inp?`<input id="ai" value="${e(def||'')}">`:''}<div class="row"><button class="btn ${inp?'':'r'}" onclick="const v=${inp?"$('ai').value":'1'};$('md2').innerHTML='';_ok(v)">${inp?'OK':'Yes'}</button><button class="btn s" onclick="$('md2').innerHTML=''">${inp?'Cancel':'No'}</button></div></div></div>`}
+const askIn=(m,def,ok)=>ask(m,v=>{if(v)ok(v)},1,def);
+// ---------- CART ----------
+let cart=JSON.parse(sessionStorage.qmCart||'{"mode":"","rid":"","l":{}}');const sc=()=>sessionStorage.qmCart=JSON.stringify(cart);
+const all=()=>cart.mode==='food'?S.items:S.prods;
+function add(id,mode,rid){const n=Object.keys(cart.l).length,g=()=>{cart.mode=mode;cart.rid=rid||'';cart.l[id]=(cart.l[id]||0)+1;sc();render()};
+ if(n&&(cart.mode!==mode||(mode==='food'&&cart.rid!==rid)))return ask('Food and grocery orders, and orders from different restaurants, must be placed separately.\n\nClear your current cart and start a new one?',()=>{cart={mode:'',rid:'',l:{}};g()});g()}
+function chg(id,d){cart.l[id]=(cart.l[id]||0)+d;if(cart.l[id]<=0)delete cart.l[id];if(!Object.keys(cart.l).length)cart={mode:'',rid:'',l:{}};sc();render()}
+const price=p=>p.disc?+p.disc:+p.price;
+function lines(){return Object.entries(cart.l).map(([id,q])=>{const it=all().find(x=>x.id===id);return it?{id,q,n:it.name,p:cart.mode==='food'?+it.price:price(it)}:null}).filter(Boolean)}
+function calc(zone){const L=lines(),sub=L.reduce((a,l)=>a+l.p*l.q,0),D=S.del,r=S.rest.find(x=>x.id===cart.rid);
+ let fee=D.mode==='distance'?(D.slabs[zone||0]||[0,0])[1]:D.flatFee;
+ const ov=cart.mode==='food'?(r&&r.fee!==''?r.fee:D.foodFee):D.groceryFee;if(ov!==''&&ov!=null)fee=+ov;
+ if(D.freeAbove>0&&sub>=D.freeAbove)fee=0;
+ if(D.nightFee&&new Date().getHours()>=D.nightFrom)fee+=+D.nightFee;
+ let disc=0,best=null;S.offers.filter(o=>o.on&&(o.scope==='all'||o.scope===(cart.mode==='food'?'food':'grocery'))&&sub>=o.min).forEach(o=>{let d=o.type==='pct'?Math.min(sub*o.value/100,o.max||1e9):o.type==='flat'?+o.value:0;if(o.type==='free')d=fee;if(d>disc){disc=d;best=o}});
+ return{L,sub,fee,disc:Math.min(disc,sub+fee),best,total:Math.max(0,sub+fee-Math.min(disc,sub+fee))}}
+// ---------- ROUTER ----------
+const go=h=>{location.hash=h};
+function render(){const h=location.hash||'#/',p=h.split('/');let html='';
+ $('loc').textContent=S.biz.loc;
+ const R={'':home,s:()=>search(decodeURIComponent(p[2]||'')),r:()=>p[2]?menu(p[2]):rests(),g:groc,cart:cartv,co:checkout,done:()=>done(p[2]),orders:ordersv,acct:acct,admin:admin};
+ $('v').innerHTML=(R[p[1]||'']||home)();
+ $('nav').innerHTML=[['#/','🏠','Home'],['#/r','🍔','Restaurants'],['#/g','🛒','Groceries'],['#/orders','📦','Orders'],['#/acct','👤','Account']].map(n=>`<a href="${n[0]}" class="${h===n[0]||(n[0]!=='#/'&&h.startsWith(n[0]))?'on':''}"><span>${n[1]}</span>${n[2]}</a>`).join('');
+ const L=lines(),c=L.reduce((a,l)=>a+l.q,0);$('bar').innerHTML=c&&p[1]!=='cart'&&p[1]!=='co'&&p[1]!=='admin'?`<div class="bar" onclick="go('#/cart')"><span>${c} item${c>1?'s':''} · ${money(calc().sub)}</span><b>View cart ›</b></div>`:'';
+ if(p[1]!=='s')$('q').value='';}
+addEventListener('hashchange',()=>{render();scrollTo(0,0)});
+const stepper=(id,mode,rid)=>cart.l[id]?`<span class="qty"><button onclick="chg('${id}',-1)">−</button>${cart.l[id]}<button onclick="chg('${id}',1)">+</button></span>`:`<button class="btn sm" onclick="add('${id}','${mode}','${rid||''}')">ADD</button>`;
+const rcard=r=>`<div class="card row" onclick="go('#/r/${r.id}')" style="cursor:pointer">${im(r.img)}<div class="grow"><b>${e(r.name)}</b> <span class="st ${r.open?'Open':'Closed'}">${r.open?'Open':'Closed'}</span><div class="m">${e(r.cuisine)}</div><div class="m">⭐ ${r.rating} · 🍳 ${r.prep} min · 🛵 ${r.dtime} min${r.min?' · Min ₹'+r.min:''}</div>${r.offer?`<span class="tag">🏷️ ${e(r.offer)}</span>`:''}</div></div>`;
+const pcard=p=>`<div class="card row">${im(p.img)}<div class="grow"><b>${e(p.name)}</b><div class="m">${e(p.brand)} ${e(p.size)}</div><div><b>${money(price(p))}</b> ${p.disc?`<s class="m">${money(p.price)}</s>`:''}</div></div>${p.out?'<span class="m">Out of stock</span>':stepper(p.id,'grocery')}</div>`;
+const icard=(i,r)=>`<div class="card row">${im(i.img)}<div class="grow"><span class="vg ${i.veg?'':'nv'}"></span> <b>${e(i.name)}</b><div class="m">${e(i.desc)}</div><b>${money(i.price)}</b></div>${!i.avail||!r.open?'<span class="m">Unavailable</span>':stepper(i.id,'food',r.id)}</div>`;
+const liveR=()=>S.rest.filter(r=>r.on);
+function home(){const pr=liveR().slice(0,3),pp=S.prods.filter(p=>!p.out).slice(0,4);
+ return`<div class="two"><button class="big" style="background:linear-gradient(135deg,#f97316,#ea580c)" onclick="go('#/r')"><span>🍔</span><b>RESTAURANTS</b><br><small>Order food from local Noamundi restaurants</small></button><button class="big" style="background:linear-gradient(135deg,#16a34a,#14532d)" onclick="go('#/g')"><span>🛒</span><b>GROCERIES</b><br><small>Groceries &amp; daily essentials delivered to your door</small></button></div>
+ <h2>🏷️ Offers</h2><div class="chips">${S.offers.filter(o=>o.on).map(o=>`<span class="chip on">${e(o.title)}</span>`).join('')||'<span class="m">No offers right now</span>'}</div>
+ <h2>Popular restaurants</h2>${pr.map(rcard).join('')}<h2>Popular groceries</h2>${pp.map(pcard).join('')}
+ <h2>How it works</h2><div class="card">1️⃣ Pick food or groceries<br>2️⃣ Add to cart &amp; enter address<br>3️⃣ Send order on WhatsApp<br>4️⃣ We deliver, pay Cash on Delivery</div>
+ <div class="card m"><b>${e(S.biz.name)}</b><br>${e(S.biz.addr)} · ${e(S.biz.phone)}<br>Open ${S.biz.open}–${S.biz.close}<br>${e(S.biz.support)}<br><a href="#/admin">Owner login</a></div>`}
+let F={veg:0,offer:0,rate:0,cui:''};
+const setF=(k,v)=>{F[k]=v;render()};
+function rests(){let L=liveR();if(F.veg)L=L.filter(r=>r.veg);if(F.offer)L=L.filter(r=>r.offer);if(F.rate)L=L.filter(r=>r.rating>=4);if(F.cui)L=L.filter(r=>r.cuisine.toLowerCase().includes(F.cui.toLowerCase()));L=[...L].sort((a,b)=>F.sort?a.dtime-b.dtime:0);
+ const ch=(k,l)=>`<span class="chip ${F[k]?'on':''}" onclick="setF('${k}',${F[k]?0:1})">${l}</span>`;
+ return`<h2>Restaurants</h2><div class="chips">${ch('veg','🟢 Veg')}${ch('offer','🏷️ Offers')}${ch('rate','⭐ 4.0+')}${ch('sort','⚡ Fast delivery')}</div><input placeholder="Filter by cuisine" value="${e(F.cui)}" onchange="setF('cui',this.value)">${L.map(rcard).join('')||'<p class="m">No restaurants match.</p>'}`}
+let MC={};
+function menu(id){const r=S.rest.find(x=>x.id===id);if(!r||!r.on)return'<p>Restaurant not found.</p>';
+ const its=S.items.filter(i=>i.rid===id),cats=[...r.cats,...new Set(its.map(i=>i.cat).filter(c=>!r.cats.includes(c)))].filter(c=>its.some(i=>i.cat===c));
+ return`<div class="card row">${im(r.img)}<div class="grow"><h2 style="margin:0">${e(r.name)}</h2><div class="m">${e(r.cuisine)} · ⭐ ${r.rating}</div><div class="m">${e(r.desc)}</div><div class="m">🕒 ${e(r.hours)} · 🛵 ${r.dtime} min · ${e(r.addr)}</div>${r.offer?`<span class="tag">${e(r.offer)}</span>`:''} <span class="st ${r.open?'Open':'Closed'}">${r.open?'Open':'Closed'}</span></div></div>
+ ${cats.map(c=>`<h2>${e(c)}</h2>${its.filter(i=>i.cat===c).map(i=>icard(i,r)).join('')}`).join('')||'<p class="m">Menu coming soon.</p>'}`}
+let GC='';
+function groc(){const L=S.prods.filter(p=>!GC||p.cat===GC);
+ return`<h2>Groceries</h2><div class="chips"><span class="chip ${GC?'':'on'}" onclick="GC='';render()">All</span>${S.gcats.map(c=>`<span class="chip ${GC===c.name?'on':''}" onclick="GC='${e(c.name).replace(/'/g,"\\'")}';render()">${e(c.img)} ${e(c.name)}</span>`).join('')}</div>${L.map(pcard).join('')||'<p class="m">No products here yet.</p>'}`}
+function search(t){t=t.toLowerCase();if(!t)return home();
+ const R=liveR().filter(r=>(r.name+r.cuisine).toLowerCase().includes(t)),I=S.items.filter(i=>(i.name+i.cat).toLowerCase().includes(t)&&S.rest.find(r=>r.id===i.rid&&r.on)),P=S.prods.filter(p=>(p.name+p.brand+p.cat).toLowerCase().includes(t));
+ return`<h2>Results for "${e(t)}"</h2>${R.map(rcard).join('')}${I.map(i=>icard(i,S.rest.find(r=>r.id===i.rid))+`<div class="m" style="margin-top:-6px">from ${e(S.rest.find(r=>r.id===i.rid).name)}</div>`).join('')}${P.map(pcard).join('')}${R.length+I.length+P.length?'':'<p class="m">Nothing found. Try another word.</p>'}`}
+function cartv(){const c=calc();if(!c.L.length)return'<h2>Your cart</h2><p class="m">Cart is empty.</p>';
+ return`<h2>${cart.mode==='food'?'🍔 '+e((S.rest.find(r=>r.id===cart.rid)||{}).name):'🛒 Grocery'} cart</h2>${c.L.map(l=>`<div class="card row"><div class="grow"><b>${e(l.n)}</b><div class="m">${money(l.p)} × ${l.q} = ${money(l.p*l.q)}</div></div>${stepper(l.id,cart.mode,cart.rid)}<button class="btn sm s" onclick="chg('${l.id}',-99)">🗑</button></div>`).join('')}${totals(c)}<button class="btn o" style="width:100%" onclick="go('#/co')">Checkout</button>`}
+const totals=c=>`<div class="card"><div class="tot"><span>Subtotal</span>${money(c.sub)}</div><div class="tot"><span>Delivery fee</span>${c.fee?money(c.fee):'FREE'}</div><div class="tot"><span>Discount${c.best?' ('+e(c.best.title)+')':''}</span>−${money(c.disc)}</div><div class="tot f"><span>Total</span>${money(c.total)}</div></div>`;
+let Z=0;
+function checkout(){let P={};try{P=JSON.parse(sessionStorage.qmPref||'{}')}catch(x){}const c=calc(Z);if(!c.L.length)return'<p>Cart empty.</p>';const D=S.del,B=S.biz,r=S.rest.find(x=>x.id===cart.rid);
+ const min=Math.max(+B.minOrder||0,cart.mode==='food'&&r?+r.min||0:0),low=c.sub<min;
+ return`<h2>Delivery details</h2><div class="card"><label>Name</label><input id="cn" value="${e(P.cn)}"><label>Mobile number</label><input id="cp" type="tel" maxlength="10" value="${e(P.cp)}"><label>House / Flat / Room</label><input id="cr" value="${e(P.cr)}"><label>Block / Area</label><input id="ca" list="ar" value="${e(P.ca)}"><datalist id="ar">${B.areas.split(',').map(a=>`<option value="${e(a.trim())}">`).join('')}</datalist><label>Full address</label><textarea id="cf" rows="2">${e(P.cf)}</textarea><label>Landmark</label><input id="cl" value="${e(P.cl)}"><label>Delivery instructions (optional)</label><input id="ci" value="${e(P.ci)}">
+ ${D.mode==='distance'?`<label>Distance zone</label><select onchange="Z=+this.value;render()">${D.slabs.map((s,i)=>`<option value="${i}" ${Z===i?'selected':''}>${i?'up to '+s[0]+' km':'0-'+s[0]+' km'} · ₹${s[1]}</option>`).join('')}</select>`:''}
+ <label>Payment</label><select id="cy"><option>Cash on Delivery</option><option>UPI (pay on delivery to ${e(B.upi)})</option></select></div>${totals(c)}
+ ${low?`<div class="warn">Minimum order is ${money(min)}. Add ${money(min-c.sub)} more.</div>`:''}<button class="btn o" style="width:100%;margin-top:8px" ${low?'disabled':''} onclick="place()">PLACE ORDER</button>`}
+function place(){const v=i=>$(i).value.trim(),ph=v('cp');
+ if(!v('cn')||!/^[6-9]\d{9}$/.test(ph)||!v('cr')||!v('cf'))return alert('Please enter name, a valid 10-digit mobile, room and full address.');
+ const c=calc(Z),r=S.rest.find(x=>x.id===cart.rid),rp=sessionStorage.qmReplace,id=rp||'QM'+Date.now().toString().slice(-6);if(rp){S.orders=S.orders.filter(x=>x.id!==rp);delete sessionStorage.qmReplace;delete sessionStorage.qmPref}
+ const o={id,time:new Date().toISOString(),mode:cart.mode,biz:cart.mode==='food'?r.name:'Groceries',cust:v('cn'),phone:ph,rid:cart.rid,zone:Z,d:{cn:v('cn'),cp:ph,cr:v('cr'),ca:v('ca'),cf:v('cf'),cl:v('cl'),ci:v('ci')},addr:mkAddr({cr:v('cr'),ca:v('ca'),cf:v('cf'),cl:v('cl')}),note:v('ci'),lines:c.L,sub:c.sub,fee:c.fee,disc:c.disc,total:c.total,pay:$('cy').value,status:'Pending'};
+ S.orders.unshift(o);save();cart={mode:'',rid:'',l:{}};sc();sessionStorage.qmLast=id;go('#/done/'+id);try{open(waUrl(o),'_blank','noopener')}catch(x){}}
+const mkAddr=d=>`${d.cr}, ${d.ca}, ${d.cf}${d.cl?' (Landmark: '+d.cl+')':''}`;
+const msg=o=>`NOAMUNDI QUICKMART ORDER${o.status==='Cancelled'?' - CANCELLED':o.edited?' - UPDATED':''}\n\nOrder ID: ${o.id}\nCustomer: ${o.cust}\nPhone: ${o.phone}\nAddress: ${o.addr}\n${o.note?'Note: '+o.note+'\n':''}Store: ${o.biz}\n\nItems:\n${o.lines.map((l,i)=>`${i+1}. ${l.n} — ${l.q} — ${money(l.p*l.q)}`).join('\n')}\n\nSubtotal: ${money(o.sub)}\nDelivery: ${money(o.fee)}\nDiscount: ${money(o.disc)}\nTOTAL: ${money(o.total)}\n\nPayment: ${o.pay}`;
+const waUrl=o=>`https://wa.me/${String(S.biz.wa).replace(/\D/g,'')}?text=${encodeURIComponent(msg(o))}`;
+function wa(id){const o=S.orders.find(x=>x.id===id);open(o?waUrl(o):`https://wa.me/${S.biz.wa}`,'_blank')}
+function cp(id){const o=S.orders.find(x=>x.id===id);const fb=()=>{$('md2').innerHTML=`<div class="mod" style="z-index:30"><div><b>Select all and copy:</b><textarea id="cpt" rows="10">${e(msg(o))}</textarea><button class="btn" onclick="$('md2').innerHTML=''">Close</button></div></div>`;const t=$('cpt');t.focus();t.select()};try{navigator.clipboard.writeText(msg(o)).then(()=>alert('Order copied'),fb)}catch(x){fb()}}
+function done(id){const o=S.orders.find(x=>x.id===id);if(!o)return'<p>Order not found.</p>';
+ return`<h2>${o.status==='Cancelled'?'❌ Order cancelled':'✅ Order placed'} <span class="st">${o.status}</span></h2>${ctl(o)}<div class="card"><b>Order ID: ${o.id}</b><pre style="white-space:pre-wrap;font:inherit">${e(msg(o))}</pre></div><a class="btn o" style="display:block;text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${waUrl(o)}">📲 ORDER ON WHATSAPP</a>
+ <div class="card warn" style="margin-top:10px"><b>WhatsApp didn't open?</b> Your order is saved (ID ${o.id}).<div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="btn sm s" onclick="cp('${o.id}')">Copy Order Details</button><a class="btn sm s" style="text-decoration:none" href="tel:${e(S.biz.phone)}">Call QuickMart</a><a class="btn sm s" style="text-decoration:none" target="_blank" rel="noopener" href="${waUrl(o)}">Retry WhatsApp</a></div></div>`}
+const canEdit=o=>o.status==='Pending';
+function ctl(o){if(o.status==='Cancelled')return`<div class="card"><b>This order is cancelled.</b><div class="row" style="margin-top:8px;flex-wrap:wrap"><a class="btn sm o" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${String(S.biz.wa).replace(/\D/g,'')}?text=${encodeURIComponent('Please cancel my order '+o.id)}">Tell QuickMart on WhatsApp</a><button class="btn sm r" onclick="rmOrder('${o.id}')">Delete from my orders</button></div></div>`;
+ if(!canEdit(o))return`<div class="warn">Your order is now <b>${o.status}</b>, so it can't be changed here. Please call ${e(S.biz.phone)}.</div>`;
+ return`<div class="card"><b>Need changes?</b><div class="m">After any change, tap ORDER ON WHATSAPP again so we get the updated order.</div><div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="btn sm s" onclick="edItems('${o.id}')">✏️ Edit items &amp; quantity</button><button class="btn sm s" onclick="edDet('${o.id}')">📝 Edit address / details</button><button class="btn sm s" onclick="addMore('${o.id}')">➕ Add more items</button><button class="btn sm r" onclick="cancelO('${o.id}')">🗑 Cancel order</button></div></div>`}
+const gO=id=>S.orders.find(o=>o.id===id);
+function recalc(o){const sv=cart;cart={mode:o.mode,rid:o.rid||'',l:{}};o.lines.forEach(l=>cart.l[l.id]=l.q);const c=calc(o.zone||0);cart=sv;o.lines=c.L;o.sub=c.sub;o.fee=c.fee;o.disc=c.disc;o.total=c.total;o.edited=true;save()}
+function edItems(id){const o=gO(id);if(!o||!canEdit(o))return;
+ $('md').innerHTML=`<div class="mod"><div><h2>Edit items</h2>${o.lines.map(l=>`<div class="card row"><div class="grow"><b>${e(l.n)}</b><div class="m">${money(l.p)} each</div></div><span class="qty"><button onclick="oq('${id}','${l.id}',-1)">−</button>${l.q}<button onclick="oq('${id}','${l.id}',1)">+</button></span><button class="btn sm s" onclick="oq('${id}','${l.id}',-99)">🗑</button></div>`).join('')}<div class="card"><div class="tot"><span>Subtotal</span>${money(o.sub)}</div><div class="tot"><span>Delivery</span>${o.fee?money(o.fee):'FREE'}</div><div class="tot"><span>Discount</span>−${money(o.disc)}</div><div class="tot f"><span>Total</span>${money(o.total)}</div></div><button class="btn" style="width:100%" onclick="$('md').innerHTML='';render()">Done</button></div></div>`}
+function oq(id,lid,d){const o=gO(id),l=o.lines.find(x=>x.id===lid);l.q+=d;if(l.q<=0)o.lines=o.lines.filter(x=>x.id!==lid);
+ if(!o.lines.length){$('md').innerHTML='';return cancelO(id)}recalc(o);edItems(id)}
+function edDet(id){const o=gO(id),d=o.d||{cn:o.cust,cp:o.phone,cf:o.addr,cr:'',ca:'',cl:''},k=[['cn','Name'],['cp','Mobile number'],['cr','House / Flat / Room'],['ca','Block / Area'],['cf','Full address'],['cl','Landmark'],['ci','Delivery instructions']];
+ $('md').innerHTML=`<div class="mod"><div><h2>Edit details</h2>${k.map(f=>`<label>${f[1]}</label><input id="x_${f[0]}" value="${e(d[f[0]]||'')}">`).join('')}<div class="row"><button class="btn" onclick="svDet('${id}')">Save</button><button class="btn s" onclick="$('md').innerHTML=''">Cancel</button></div></div></div>`}
+function svDet(id){const o=gO(id),d={};['cn','cp','cr','ca','cf','cl','ci'].forEach(k=>d[k]=$('x_'+k).value.trim());
+ if(!d.cn||!/^[6-9]\d{9}$/.test(d.cp)||!d.cf)return alert('Enter name, a valid 10-digit mobile and full address.');
+ o.d=d;o.cust=d.cn;o.phone=d.cp;o.addr=mkAddr(d);o.note=d.ci;o.edited=true;save();$('md').innerHTML='';render()}
+function addMore(id){const o=gO(id);ask('This reopens your cart with these items so you can add more. Place the order again to update it (same Order ID).',()=>{cart={mode:o.mode,rid:o.rid||'',l:{}};o.lines.forEach(l=>cart.l[l.id]=l.q);sc();sessionStorage.qmReplace=id;sessionStorage.qmPref=JSON.stringify(o.d||{});o.edited=true;save();go(o.mode==='food'?'#/r/'+o.rid:'#/g')})}
+function cancelO(id){ask('Cancel this order?',()=>{gO(id).status='Cancelled';save();render()})}
+function rmOrder(id){ask('Delete this order from your list?',()=>{S.orders=S.orders.filter(o=>o.id!==id);save();go('#/orders')})}
+function ordersv(){return`<h2>Your orders</h2>${S.orders.slice(0,20).map(o=>`<div class="card"><b>${o.id}</b> <span class="st">${o.status}</span><div class="m">${e(o.biz)} · ${money(o.total)} · ${new Date(o.time).toLocaleString()}</div><button class="btn sm s" onclick="go('#/done/${o.id}')">${canEdit(o)?'View / Edit':'View'}</button> ${o.status==='Cancelled'?`<button class="btn sm r" onclick="rmOrder('${o.id}')">Delete</button>`:''}</div>`).join('')||'<p class="m">No orders yet on this device.</p>'}`}
+function acct(){return`<h2>Account</h2><div class="card">Orders are saved on this device. No sign-up needed.<br><br>Support: ${e(S.biz.phone)}<br><a href="#/admin">Owner / Admin login</a></div>`}
+function chLoc(){askIn('Delivery location',S.biz.loc,v=>{S.biz.loc=v;save();render()})}
+// ---------- ADMIN ----------
+let AT='dash',AR='';
+const tabs=[['dash','Dashboard'],['rest','Restaurants'],['menu','Menu'],['gro','Grocery'],['ord','Orders'],['del','Delivery'],['off','Offers'],['set','Settings']];
+function admin(){
+ if(!Auth.ok())return`<h2>Owner login</h2><div class="card"><div class="warn">${S.auth?'':'First use: the username and password you enter now become the owner login. '}Demo storage is in this browser only and is NOT secure. Connect Supabase/Firebase Auth before real launch.</div><label>Username / email</label><input id="au"><label>Password</label><input id="ap" type="password"><button class="btn" onclick="doLogin()">Login</button></div>`;
+ const T={dash,rest:ar,menu:am,gro:ag,ord:ao,del:ad,off:af,set:as}[AT]();
+ return`<h2>Admin <button class="btn sm s" onclick="Auth.out();render()">Logout</button></h2><div class="tabs">${tabs.map(t=>`<span class="chip ${AT===t[0]?'on':''}" onclick="AT='${t[0]}';render()">${t[1]}</span>`).join('')}</div>${T}`}
+async function doLogin(){if(!$('au').value||!$('ap').value)return;if(!await Auth.login($('au').value,$('ap').value))alert('Wrong login');render()}
+function dash(){const t=new Date().toDateString(),O=S.orders,td=O.filter(o=>new Date(o.time).toDateString()===t);
+ const k=[['Restaurants',S.rest.length],['Grocery products',S.prods.length],['Total orders',O.length],["Today's orders",td.length],['Pending',O.filter(o=>o.status==='Pending').length],['Revenue (delivered)',money(O.filter(o=>o.status==='Delivered').reduce((a,o)=>a+o.total,0))]];
+ return`<div class="two">${k.map(x=>`<div class="card"><div class="m">${x[0]}</div><b style="font-size:22px">${x[1]}</b></div>`).join('')}</div>${S.biz.demo?'<div class="warn">Demo data and placeholder WhatsApp number are loaded. Edit them in Settings.</div>':''}<button class="btn r sm" style="margin-top:10px" onclick="ask('Reset ALL data to demo?',()=>{localStorage.removeItem(KEY);S=seed();render()})">Reset to demo data</button>`}
+// generic CRUD
+function crud(col,F,flt,defs,lab,sub){const L=S[col].filter(flt||(()=>1));
+ return`<button class="btn" onclick="edit('${col}','',${e(JSON.stringify(JSON.stringify(defs||{})))})">+ Add</button>${L.map(x=>`<div class="card row">${x.img!==undefined?im(x.img):''}<div class="grow"><b>${e(x.name||x.title)}</b><div class="m">${lab(x)}</div></div><button class="btn sm s" onclick="edit('${col}','${x.id}')">Edit</button><button class="btn sm r" onclick="del('${col}','${x.id}')">✕</button></div>`).join('')}`}
+const FD={rest:[['name','Name'],['img','Logo (emoji or upload)','img'],['cuisine','Cuisine'],['desc','Description'],['addr','Address'],['phone','Phone'],['hours','Opening hours'],['rating','Rating','n'],['prep','Prep time (min)','n'],['dtime','Delivery time (min)','n'],['min','Minimum order ₹','n'],['fee','Delivery fee override ₹ (blank = default)'],['offer','Offer text'],['open','Open now','b'],['on','Enabled','b'],['veg','Pure veg','b']],
+ items:[['name','Name'],['img','Image (emoji or upload)','img'],['cat','Category'],['desc','Description'],['price','Price ₹','n'],['veg','Veg','b'],['avail','Available','b']],
+ prods:[['name','Name'],['brand','Brand'],['img','Image (emoji or upload)','img'],['cat','Category'],['size','Size / quantity'],['price','Price ₹','n'],['disc','Discount price ₹ (blank = none)'],['out','Out of stock','b']],
+ gcats:[['name','Name'],['img','Emoji','img']],
+ offers:[['title','Title'],['type','Type (pct / flat / free)'],['value','Value (% or ₹)','n'],['max','Max discount ₹','n'],['min','Min order ₹','n'],['scope','Applies to (all / food / grocery)'],['on','Active','b']]};
+function edit(col,id,defs){const x=id?S[col].find(y=>y.id===id):JSON.parse(defs||'{}');window._e={col,id,x:{...x}};
+ $('md').innerHTML=`<div class="mod"><div><h2>${id?'Edit':'Add'}</h2>${FD[col].map(f=>{const v=x[f[0]];return f[2]==='b'?`<label><input type="checkbox" style="width:auto" id="f_${f[0]}" ${v===undefined||v?'checked':''}> ${f[1]}</label><br>`:f[2]==='img'?`<label>${f[1]}</label><input id="f_${f[0]}" value="${(v||'').startsWith('data:')?'':e(v)}" placeholder="🍛 or leave to keep uploaded"><input type="file" accept="image/*" onchange="upl(this)">`:`<label>${f[1]}</label><input id="f_${f[0]}" ${f[2]==='n'?'type="number" step="any"':''} value="${e(v??'')}">`}).join('')}<div class="row"><button class="btn" onclick="sv()">Save</button><button class="btn s" onclick="$('md').innerHTML=''">Cancel</button></div></div></div>`}
+function upl(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),s=Math.min(1,160/Math.max(i.width,i.height));c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);window._e.up=c.toDataURL('image/jpeg',.7);alert('Image ready, press Save')};i.src=r.result};r.readAsDataURL(f)}
+function sv(){const{col,id,x,up}=window._e;FD[col].forEach(f=>{const el=$('f_'+f[0]);let v=f[2]==='b'?el.checked:f[2]==='n'?(el.value===''?'':+el.value):el.value;if(f[2]==='img'){v=up||(el.value||x[f[0]]||'🍽️')}x[f[0]]=v});
+ if(!x.name&&!x.title)return alert('Name required');
+ if(id)S[col]=S[col].map(y=>y.id===id?x:y);else{x.id=uid();if(col==='rest'){x.cats=['Recommended'];x.hours=x.hours||'';}if(col==='items')x.rid=AR;S[col].push(x)}
+ if(col==='items'){const r=S.rest.find(r=>r.id===x.rid);if(r&&!r.cats.includes(x.cat))r.cats.push(x.cat)}
+ save();$('md').innerHTML='';render()}
+function del(col,id){ask('Delete permanently?',()=>{S[col]=S[col].filter(y=>y.id!==id);if(col==='rest')S.items=S.items.filter(i=>i.rid!==id);save();render()})}
+const ar=()=>crud('rest',0,0,{rating:4,prep:20,dtime:30,min:0,open:true,on:true,fee:''},r=>`${e(r.cuisine)} · ${r.open?'Open':'Closed'}${r.on?'':' · HIDDEN'}`);
+function am(){if(!S.rest.find(r=>r.id===AR))AR=(S.rest[0]||{}).id||'';const r=S.rest.find(x=>x.id===AR);if(!r)return'<p>Add a restaurant first.</p>';
+ return`<select onchange="AR=this.value;render()">${S.rest.map(x=>`<option value="${x.id}" ${x.id===AR?'selected':''}>${e(x.name)}</option>`).join('')}</select><div class="card"><b>Categories</b><div class="chips">${r.cats.map((c,i)=>`<span class="chip">${e(c)} <a onclick="rnCat(${i})">✎</a> <a onclick="dlCat(${i})">✕</a></span>`).join('')}<span class="chip on" onclick="adCat()">+ Category</span></div></div>${crud('items',0,i=>i.rid===AR,{veg:true,avail:true,cat:r.cats[0]||''},i=>`${e(i.cat)} · ${money(i.price)} · ${i.avail?'Available':'Out of stock'}`)}`}
+const RR=()=>S.rest.find(x=>x.id===AR);
+function adCat(){askIn('Category name','',v=>{RR().cats.push(v);save();render()})}
+function rnCat(i){const r=RR(),o=r.cats[i];askIn('Rename category',o,v=>{r.cats[i]=v;S.items.forEach(x=>{if(x.rid===AR&&x.cat===o)x.cat=v});save();render()})}
+function dlCat(i){const r=RR();ask('Delete category and its items?',()=>{S.items=S.items.filter(x=>!(x.rid===AR&&x.cat===r.cats[i]));r.cats.splice(i,1);save();render()})}
+function ag(){return`<div class="card"><b>Categories</b>${crud('gcats',0,0,{},c=>S.prods.filter(p=>p.cat===c.name).length+' products')}</div><b>Products</b>${crud('prods',0,0,{cat:S.gcats[0]?.name||'',disc:''},p=>`${e(p.brand)} · ${e(p.cat)} · ${money(p.price)}${p.disc?' → '+money(p.disc):''}${p.out?' · OUT':''}`)}`}
+const STS=['Pending','Accepted','Preparing','Ready','Out for Delivery','Delivered','Rejected','Cancelled'];
+function ao(){return S.orders.map(o=>`<div class="card"><b>${o.id}</b> · ${e(o.biz)} <span class="st">${o.status}</span><div class="m">${e(o.cust)} · <a href="tel:${e(o.phone)}">${e(o.phone)}</a><br>${e(o.addr)}<br>${o.lines.map(l=>l.q+'× '+e(l.n)).join(', ')}<br>${money(o.total)} · ${e(o.pay)} · ${new Date(o.time).toLocaleString()}</div><select onchange="stat('${o.id}',this.value)">${STS.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>`).join('')||'<p class="m">No orders yet.</p>'}
+function stat(id,v){S.orders.find(o=>o.id===id).status=v;save();render()}
+function ad(){const D=S.del;return`<div class="card"><label>Pricing mode</label><select id="d_mode"><option value="flat" ${D.mode==='flat'?'selected':''}>Flat fee + free threshold</option><option value="distance" ${D.mode==='distance'?'selected':''}>Distance based (customer picks zone)</option></select>
+ <label>Flat delivery fee ₹</label><input id="d_flatFee" type="number" value="${D.flatFee}"><label>Free delivery above ₹ (0 = never)</label><input id="d_freeAbove" type="number" value="${D.freeAbove}">
+ <label>Distance slabs: "km:fee" per line (last = 99)</label><textarea id="d_slabs" rows="4">${D.slabs.map(s=>s.join(':')).join('\n')}</textarea>
+ <label>All restaurants fee ₹ (blank = default; per-restaurant override in Restaurants)</label><input id="d_foodFee" value="${D.foodFee}"><label>Grocery fee ₹ (blank = default)</label><input id="d_groceryFee" value="${D.groceryFee}">
+ <label>Night charge from hour (0-23)</label><input id="d_nightFrom" type="number" value="${D.nightFrom}"><label>Night charge ₹ (0 = none)</label><input id="d_nightFee" type="number" value="${D.nightFee}">
+ <button class="btn" onclick="svd()">Save delivery settings</button></div><div class="m">Suggested defaults: ₹20 below ₹199, free at ₹199+. Minimum order is under Settings.</div>`}
+function svd(){const D=S.del,g=k=>$('d_'+k).value;D.mode=g('mode');D.flatFee=+g('flatFee');D.freeAbove=+g('freeAbove');D.slabs=g('slabs').split('\n').map(l=>l.split(':').map(Number)).filter(s=>s.length===2&&!s.some(isNaN));D.foodFee=g('foodFee').trim();D.groceryFee=g('groceryFee').trim();D.nightFrom=+g('nightFrom');D.nightFee=+g('nightFee');save();alert('Saved. Customers see new fees immediately.')}
+const af=()=>crud('offers',0,0,{type:'pct',value:10,max:50,min:0,scope:'all',on:true},o=>`${o.type} ${o.value} · min ₹${o.min} · ${o.scope}${o.on?'':' · OFF'}`);
+function as(){const B=S.biz,k=[['name','Business name'],['wa','WhatsApp number (country code, no +)'],['phone','Phone'],['addr','Business address'],['loc','Default location'],['areas','Delivery areas (comma separated)'],['open','Opening time'],['close','Closing time'],['minOrder','Minimum order ₹'],['upi','UPI ID'],['support','Customer support message']];
+ return`<div class="card">${k.map(f=>`<label>${f[1]}</label><input id="b_${f[0]}" value="${e(B[f[0]])}">`).join('')}<button class="btn" onclick="svb()">Save settings</button></div><div class="card m">Logo: place your official logo file in the page header (the uploaded logo was not available to this build, so a text logo is used until you supply it).</div>`}
+function svb(){['name','wa','phone','addr','loc','areas','open','close','minOrder','upi','support'].forEach(k=>S.biz[k]=$('b_'+k).value);S.biz.demo=false;save();alert('Saved');render()}
+render();
+</script></body></html>
